@@ -9,20 +9,42 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 {
 	ui.setupUi(this);
 
+	// setup the dialog
+	comparisonDlg = new ComparisonDlg(this);
+
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui.actionStart, SIGNAL(triggered()), this, SLOT(onStart()));
 
 	// setup the GL widget
-	glWidget = new GLWidget3D(this);
-	setCentralWidget(glWidget);
+	//glWidget = new GLWidget3D(this);
+	//setCentralWidget(glWidget);
+
+	comparisonDlg->show();
 }
 
 MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::keyPressEvent(QKeyEvent* e)
+{
+	switch( e->key() ){
+	case Qt::Key_Left:
+		printf("Left\n");
+		break;
+	case Qt::Key_Right:
+		printf("Right\n");
+		break;
+	}
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent* e)
+{
+}
+
 void MainWindow::onStart()
 {
+	/*
 	std::mt19937 mtengine;
 	std::uniform_real_distribution<double> distribution(0.0,1.0);
 
@@ -49,5 +71,6 @@ void MainWindow::onStart()
 		// accept or reject
 		layout = layout2;
 	}
+	*/
 }
 

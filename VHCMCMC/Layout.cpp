@@ -2,35 +2,37 @@
 #include <random>
 #include <QGLWidget>
 
-Layout::Layout() : width(8), depth(8)
+Layout::Layout() : width(12), depth(6), height(3)
 {
 	std::mt19937 mtengine;
 	std::uniform_real_distribution<double> distribution(0.0,1.0);
 
-	for (int i = 0; i < 8; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		while (true) {
-			int type = i < 3 ? 0 : (i < 5 ? 1 : 2);
+			int type = i;
 
 			float x = width * distribution(mtengine) - width * 0.5;
-			float y = depth * distribution(mtengine) - depth * 0.5;		
-			float theta = 3.14159265359 * distribution(mtengine);
-			float width = 0;
-			float depth = 0;
-			float height = 0;
-			if (type == 0) {
-				width = 2.0;
-				depth = 2.0;
-				height = 1.3;
-			} else if (type == 1) {
-				width = 0.4;
-				depth = 1.0;
-				height = 1.6;
-			} else if (type == 2) {
-				width = 0.3;
-				depth = 0.3;
-				height = 1.63;
-			}
-			Furniture furniture(type, x, y, width, depth, height, theta);
+			float y = depth * distribution(mtengine) - depth * 0.5;
+			float z = 0;
+			float t = 3.14159265359 * distribution(mtengine);
+			/*if (type == 2) {
+				float rnd = distribution(mtengine);
+				if (rnd >= 0.75) {
+					x = width * 0.5;
+					t = 3.14159265359 * 0.5f;
+				} else if (rnd >= 0.5) {
+					x = -width * 0.5;
+					t = -3.14159265359 * 0.5f;
+				} else if (rnd >= 0.25) {
+					y = -depth * 0.5;
+					t = 0.0f;
+				} else {
+					y = depth * 0.5;
+					t = 3.14159265359;
+				}
+				z = 1.2 + (height - 1.2) * distribution(mtengine);
+			}*/
+			Furniture furniture(type, x, y, z, t);
 
 			bool valid = true;
 
@@ -80,13 +82,14 @@ Layout Layout::proposeChange(float sigmaX, float sigmaY, float sigmaTheta)
 	std::normal_distribution<double> distributionY(0.0, sigmaY);
 	std::normal_distribution<double> distributionTheta(0.0, sigmaTheta);
 
-	Layout proposedLayout(width, depth);
+	Layout proposedLayout(width, depth, height);
 
 	for (int i = 0; i < furnitures.size(); ++i) {
 		float x = furnitures[i].x + distributionX(mtengine);
 		float y = furnitures[i].y + distributionY(mtengine);
+		float z = 0;
 		float theta = furnitures[i].theta + distributionTheta(mtengine);
-		proposedLayout.addFurniture(Furniture(0, x, y, 0.5, 0.5, 1.3, theta));
+		proposedLayout.addFurniture(Furniture(0, x, y, z, theta));
 	}
 
 	return proposedLayout;
@@ -112,22 +115,85 @@ cv::Mat Layout::feature()
 	return vec;
 }
 
-void Layout::draw()
+void Layout::draw(VBORenderManager& rendManager)
 {
-	// draw floor
-	glBegin(GL_QUADS);
-	glColor3f(0.5f, 0.5f, 0.5f);
-	glVertex3f(-width / 2, -depth / 2, 0.0f);
-	glVertex3f(width / 2, -depth / 2, 0.0f);
-	glVertex3f(width / 2, depth / 2, 0.0f);
-	glVertex3f(-width / 2, depth / 2, 0.0f);
-	glEnd();
+	rendManager.removeStaticGeometry(QString("layout"));
+	rendManager.removeStaticGeometry(QString("furniture"));
 
-	// draw furniture
+	// floor
+	std::vector<Vertex> verts;
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, depth, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, depth, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/floor.jpg", GL_QUADS, 2);// texture && lighting
+
+	// bottom back wall
+	verts.clear();
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 1.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall2.jpg", GL_QUADS, 2);// texture && lighting
+
+	// upper back wall
+	verts.clear();
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, height-1.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, height-1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall1.jpg", GL_QUADS, 2);// texture && lighting
+
+	// bottom right wall
+	verts.clear();
+	verts.push_back(Vertex(width*0.5, depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 1.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall2.jpg", GL_QUADS, 2);// texture && lighting
+
+	// upper right wall
+	verts.clear();
+	verts.push_back(Vertex(width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, height-1.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, height-1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall1.jpg", GL_QUADS, 2);// texture && lighting
+
+	// bottom left wall
+	verts.clear();
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 1.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall2.jpg", GL_QUADS, 2);// texture && lighting
+
+	// upper left wall
+	verts.clear();
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, height-1.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, height-1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall1.jpg", GL_QUADS, 2);// texture && lighting
+
+	// bottom front wall
+	verts.clear();
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 1.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall2.jpg", GL_QUADS, 2);// texture && lighting
+
+	// upper front wall
+	verts.clear();
+	verts.push_back(Vertex(width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, 0.0f, 0.0f));	
+	verts.push_back(Vertex(-width*0.5, -depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, width, height-1.0f, 0.0f));	
+	verts.push_back(Vertex(width*0.5, -depth*0.5, height, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, height-1.0f, 0.0f));	
+	rendManager.addStaticGeometry("layout", verts, "../data/textures/wall1.jpg", GL_QUADS, 2);// texture && lighting
+
 	for (int i = 0; i < furnitures.size(); ++i) {
-		glPushMatrix();
-		furnitures[i].draw();
-		glPopMatrix();
+		furnitures[i].draw(rendManager);
 	}
 }
 

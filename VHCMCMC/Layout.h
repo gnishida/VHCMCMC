@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "VBORenderManager.h"
 #include <vector>
 #include "Furniture.h"
 #include <opencv/cv.h>
@@ -13,16 +14,17 @@ class Layout
 {
 public:
 	Layout();
-	Layout(float width, float depth) : width(width), depth(depth) {}
+	Layout(float width, float depth, float height) : width(width), depth(depth), height(height) {}
 	void addFurniture(Furniture furniture);
 	Layout proposeChange(float sigmaX, float sigmaY, float sigmaTheta);
 	cv::Mat feature();
-	void draw();
+	void draw(VBORenderManager& rendManager);
 	bool within(Polygon2D line);
 
 public:
 	float width;
 	float depth;
+	float height;
 	std::vector<Furniture> furnitures;
 };
 

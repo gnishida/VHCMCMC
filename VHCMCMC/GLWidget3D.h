@@ -1,9 +1,29 @@
+/*********************************************************************
+This file is part of QtUrban.
+
+    QtUrban is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3 of the License.
+
+    QtUrban is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with QtUrban.  If not, see <http://www.gnu.org/licenses/>.
+***********************************************************************/
+
 #pragma once
+
+#include "glew.h"
+#include "VBORenderManager.h"
+#include "GLWidget3D_Shadows.h"
 
 #include <QGLWidget>
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include "Camera.h"
+#include "Camera2D.h"
 #include "Layout.h"
 
 class MainWindow;
@@ -11,8 +31,18 @@ class MainWindow;
 class GLWidget3D : public QGLWidget {
 public:
 	MainWindow* mainWin;
-	Camera camera;
+	Camera2D camera;
 	Layout layout;
+
+	QPoint lastPos;
+	float farPlaneToSpaceRadiusFactor;
+	float spaceRadius;
+	float rotationSensitivity;
+	float zoomSensitivity;
+
+	VBORenderManager vboRenderManager;
+	GLWidgetSimpleShadow shadow;
+	bool shadowEnabled;
 
 public:
 	GLWidget3D(MainWindow *parent);
@@ -23,7 +53,11 @@ public:
 
 	void mouseTo2D(int x, int y, QVector2D &result);
 
-	void drawScene();
+	void drawScene(int drawMode);
+
+	void updateCamera();
+	void generate2DGeometry();
+	void generate3DGeometry(bool justRoads=false);
 
 
 protected:
