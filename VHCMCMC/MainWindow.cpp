@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDir>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
@@ -37,12 +38,22 @@ void MainWindow::keyPressEvent(QKeyEvent* e)
 {
 	if (!QDir("samples").exists()) QDir().mkdir("samples");
 	QString fileName = "samples/" + QString::number(mcmc.step) + ".png";
+	QString featureFileName = "samples/features.txt";
+	QFile file(featureFileName);
+	file.open(QIODevice::Append);
+	QTextStream out(&file);
+	cv::Mat vec;
 
 	switch (e->key()) {
 	case Qt::Key_Left:
 		printf("Left\n");
 
 		glWidget1->grabFrameBuffer().save(fileName);
+		vec = mcmc.layout.feature();
+		for (int r = 0; r < vec.rows; ++r) {
+			out << vec.at<float>(r, 0) << ",";
+		}
+		out << "\n";
 
 		mcmc.reject();
 		mcmc.generateProposal();
@@ -54,6 +65,11 @@ void MainWindow::keyPressEvent(QKeyEvent* e)
 		printf("Right\n");
 
 		glWidget2->grabFrameBuffer().save(fileName);
+		vec = mcmc.proposedLayout.feature();
+		for (int r = 0; r < vec.rows; ++r) {
+			out << vec.at<float>(r, 0) << ",";
+		}
+		out << "\n";
 
 		mcmc.accept();
 		mcmc.generateProposal();
@@ -64,6 +80,8 @@ void MainWindow::keyPressEvent(QKeyEvent* e)
 
 		break;
 	}
+
+	file.close();
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* e)

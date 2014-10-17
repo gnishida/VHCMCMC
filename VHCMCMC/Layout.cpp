@@ -16,7 +16,7 @@ Layout::Layout() : width(8), depth(5), height(3)
 			float x = Util::genRand(-width * 0.5, width * 0.5);
 			float y = Util::genRand(-depth * 0.5, depth * 0.5);
 			float z = 0;
-			float t = t = M_PI / 12.0f * (int)Util::genRand(0, 12);
+			float t = M_PI / 12.0f * (int)Util::genRand(0, 12);
 
 			if (type == Furniture::TYPE_BOOKSHELF) {
 				float rnd = Util::genRand(0, 1);
@@ -35,7 +35,7 @@ Layout::Layout() : width(8), depth(5), height(3)
 				}
 			}
 
-			Furniture furniture(type, x, y, z, t);
+			Furniture furniture(type, x, y, z, Util::normalizeAngle(t));
 
 			bool valid = true;
 
@@ -80,17 +80,18 @@ void Layout::addFurniture(Furniture furniture)
 
 void Layout::change()
 {
-	float sigmaX = width * 0.02f;
-	float sigmaY = depth * 0.02f;
-	float sigmaTheta = M_PI * 0.02f;
+	float sigmaX = width * 0.18f;
+	float sigmaY = depth * 0.18f;
+	float sigmaTheta = M_PI * 0.18f;
 
 	for (int i = 0; i < furnitures.size(); ++i) {
 		while (true) {
 			int type = furnitures[i].type;
-			float x = Util::genRandNormal(furnitures[i].x, sigmaX);
-			float y = Util::genRandNormal(furnitures[i].y, sigmaY);
+			float x = Util::genRandNormal(furnitures[i].x, sigmaX * sigmaX);
+			float y = Util::genRandNormal(furnitures[i].y, sigmaY * sigmaY);
 			float z = 0;
-			float t = t = M_PI / 12.0f * (int)Util::genRand(0, 12);
+			float t = Util::genRandNormal(furnitures[i].theta, sigmaTheta * sigmaTheta);
+			t = Util::normalizeAngle(M_PI * (int)((t + M_PI / 24.0f) * 12.0f / M_PI) / 12.0f);
 
 			if (type == Furniture::TYPE_BOOKSHELF) {
 				float rnd = Util::genRand(0, 1);
@@ -109,7 +110,7 @@ void Layout::change()
 				}
 			}
 
-			Furniture furniture(type, x, y, z, t);
+			Furniture furniture(type, x, y, z, Util::normalizeAngle(t));
 
 			bool valid = true;
 
@@ -154,16 +155,12 @@ void Layout::change()
  */
 cv::Mat Layout::feature()
 {
-	int nDiscretization = 20;
-	cv::Mat vec(furnitures.size() * nDiscretization * 3, 1, CV_8U, cv::Scalar(0));
+	cv::Mat vec(furnitures.size() * 3, 1, CV_32F);
 
 	for (int i = 0; i < furnitures.size(); ++i) {
-		int nx = furnitures[i].x / width * nDiscretization;
-		int ny = furnitures[i].y / depth * nDiscretization;
-		int nt = furnitures[i].theta / M_PI * nDiscretization;
-		vec.at<unsigned char>(i * nDiscretization * 3 + nx, 0) = 1;
-		vec.at<unsigned char>(i * nDiscretization * 3 + nDiscretization + ny, 0) = 1;
-		vec.at<unsigned char>(i * nDiscretization * 3 + nDiscretization * 2 + nt, 0) = 1;
+		vec.at<float>(i * 3, 0) = furnitures[i].x;
+		vec.at<float>(i * 3 + 1, 0) = furnitures[i].y;
+		vec.at<float>(i * 3 + 2, 0) = furnitures[i].theta;
 	}
 
 	return vec;
