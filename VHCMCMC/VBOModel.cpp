@@ -63,11 +63,11 @@
 
 			//printf("fN %d\n",fN);
 			QString modelFile=fileNames[fN];
-			printf("loading OBJ tree mode... %s\n",modelFile.toAscii().constData());
+			printf("loading OBJ ... %s\n",modelFile.toAscii().constData());
 			nv::Model	*modelT;
 			modelT = new nv::Model;
 			if (!modelT->loadModelFromFile(modelFile.toAscii().constData())) {
-				printf("Error loading OBJ tree model %s\n",modelFile.toAscii().constData());
+				printf("Error loading OBJ %s\n",modelFile.toAscii().constData());
 				return;
 			}
 			//printf("2\n");

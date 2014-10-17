@@ -24,7 +24,7 @@ Furniture::Furniture(int type, float x, float y, float z, float theta) : type(ty
 		_footprint.push_back(QVector2D(x-width * 0.5, y+depth * 0.5));
 		_footprint.push_back(QVector2D(x-width * 0.5, y-depth * 0.5));
 	} else if (type == TYPE_SOFATABLE) { // sofa
-		width = 3.0;
+		width = 3.5;
 		depth = 3.0;
 		height = 0.75;
 		_footprint.push_back(QVector2D(x-width * 0.5, y-depth * 0.5));

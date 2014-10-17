@@ -26,5 +26,6 @@ public:
 	float depth;
 	float height;
 	std::vector<Furniture> furnitures;
+	VBORenderManager* rendManager;
 };
 

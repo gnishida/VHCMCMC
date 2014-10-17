@@ -32,7 +32,7 @@ void VBOModelManager::initModels(){
 	fileNames.clear();
 	fileNames.push_back("../data/models/sofa2.obj");
 	models[ind].initModel(fileNames);
-	models[ind].initScale(0.03f);
+	models[ind].initScale(0.11f);
 	models[ind].loadModel();
 
 	// bookshelf
