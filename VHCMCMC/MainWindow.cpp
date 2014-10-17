@@ -3,6 +3,8 @@
 #include "HumanComputationEmulator.h"
 #include "GLWidget3D.h"
 #include <random>
+#include <QHBoxLayout>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
@@ -10,16 +12,35 @@ MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
 	ui.setupUi(this);
 
 	// setup the dialog
-	comparisonDlg = new ComparisonDlg(this);
+	//comparisonDlg = new ComparisonDlg(this);
 
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui.actionStart, SIGNAL(triggered()), this, SLOT(onStart()));
 
+	//QVBoxLayout* layout = new QVBoxLayout(this);
+
 	// setup the GL widget
-	//glWidget = new GLWidget3D(this);
+	//glWidget = new GLWidget3D(layout);
+	//glWidget->setGeometry(50,50,300,300);
 	//setCentralWidget(glWidget);
 
-	comparisonDlg->show();
+	//comparisonDlg->show();
+
+
+
+	QWidget *central = new QWidget(this); // a central widget
+	glWidget1 = new GLWidget3D((QWidget*)this);
+	//glWidget->setFrameStyle(QFrame::Box | QFrame::Plain);
+	glWidget2 = new GLWidget3D((QWidget*)this);
+	//QLabel *widget2 = new QLabel("two widget", this);
+	//widget2->setFrameStyle(QFrame::Box | QFrame::Plain);
+
+	QHBoxLayout *layout = new QHBoxLayout(central);
+	layout->addWidget(glWidget1);
+	layout->addWidget(glWidget2);
+
+	central->setLayout(layout);
+	setCentralWidget(central); // you were missing this
 }
 
 MainWindow::~MainWindow()

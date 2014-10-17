@@ -5,10 +5,7 @@
 #include "VBOUtil.h"
 #include "qmap.h"
 
-/*#include "VBOWater.h"*/
-//#include "VBOSkyBox.h"
-//#include "VBOTerrain.h"
-#include "VBOModel_StreetElements.h"
+#include "VBOModelManager.h"
 
 #ifndef Q_MOC_RUN
 #include <boost/geometry/geometry.hpp>
@@ -99,8 +96,8 @@ public:
 	/*VBOWater vboWater;
 	void renderWater();*/
 
-	/// GUI
-	//VBOGUI vboGUI;
+	// furniture
+	VBOModelManager vboFurnitures;
 
 	// textures
 	QHash<QString,GLuint> nameToTexId;
@@ -113,7 +110,6 @@ public:
 	bool addStaticConvexPoly(QString geoName,std::vector<QVector3D>& pos,float zShift,bool inverseLoop,QString textureName,int shaderMode,QVector3D texScale,bool tesselate=true,QVector3D* color=0);
 	bool removeStaticGeometry(QString geoName);
 	void renderStaticGeometry(QString geoName);
-	//void renderStaticTexArrayGeometry(QString geoName);
 	bool checkIfGeoNameInUse(QString geoName);
 
 	//grid

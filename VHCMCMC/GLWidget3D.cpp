@@ -19,7 +19,7 @@ This file is part of QtUrban.
 #include "MainWindow.h"
 #include <gl/GLU.h>
 
-GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuffers), (QWidget*)mainWin) {
+GLWidget3D::GLWidget3D(QWidget* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuffers), (QWidget*)mainWin) {
 	this->mainWin = mainWin;
 
 	camera.resetCamera();

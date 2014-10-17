@@ -92,9 +92,6 @@
     <ClCompile Include="VBOModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VBOModel_StreetElements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="nvModel\nvModel.cpp">
       <Filter>Source Files\nvModels</Filter>
     </ClCompile>
@@ -104,14 +101,8 @@
     <ClCompile Include="nvModel\nvModelQuery.cpp">
       <Filter>Source Files\nvModels</Filter>
     </ClCompile>
-    <ClCompile Include="ComparisonDlg.cpp">
+    <ClCompile Include="VBOModelManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ComparisonDlg.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ComparisonDlg.cpp">
-      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,12 +114,6 @@
     </CustomBuild>
     <CustomBuild Include="MainWindow.qrc">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ComparisonDlg.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ComparisonDlg.h">
-      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +162,6 @@
     <ClInclude Include="Camera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VBOModel_StreetElements.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VBOModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -198,8 +180,8 @@
     <ClInclude Include="nvModel\nvVector.h">
       <Filter>Source Files\nvModels</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_ComparisonDlg.h">
-      <Filter>Generated Files</Filter>
+    <ClInclude Include="VBOModelManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

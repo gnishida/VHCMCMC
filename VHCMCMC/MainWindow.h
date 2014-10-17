@@ -4,7 +4,6 @@
 #include <QtGui/QMainWindow>
 #include "ui_MainWindow.h"
 #include "GLWidget3D.h"
-#include "ComparisonDlg.h"
 
 class MainWindow : public QMainWindow
 {
@@ -23,8 +22,8 @@ public slots:
 
 private:
 	Ui::MainWindowClass ui;
-	//GLWidget3D* glWidget;
-	ComparisonDlg* comparisonDlg;
+	GLWidget3D* glWidget1;
+	GLWidget3D* glWidget2;
 };
 
 #endif // MAINWINDOW_H

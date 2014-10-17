@@ -506,7 +506,7 @@
 	}//
 	void VBORenderManager::renderAllStreetElementName(QString name){
 		for(int i=0;i<nameToVectorModels[name].size();i++){
-			VBOModel_StreetElements::renderOneStreetElement(program,nameToVectorModels[name][i]);
+			vboFurnitures.renderOneModel(program,nameToVectorModels[name][i]);
 		}
 		//printf("name %s --> %d\n",name.toAscii().constData(),nameToVectorModels[name].size());
 	}//

@@ -30,7 +30,7 @@ class MainWindow;
 
 class GLWidget3D : public QGLWidget {
 public:
-	MainWindow* mainWin;
+	QWidget* mainWin;
 	Camera2D camera;
 	Layout layout;
 
@@ -45,7 +45,7 @@ public:
 	bool shadowEnabled;
 
 public:
-	GLWidget3D(MainWindow *parent);
+	GLWidget3D(QWidget* mainWin);
 	~GLWidget3D();
 
 	QSize minimumSizeHint() const;
