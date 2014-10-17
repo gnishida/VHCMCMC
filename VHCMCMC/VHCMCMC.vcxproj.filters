@@ -104,6 +104,9 @@
     <ClCompile Include="VBOModelManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MCMC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MainWindow.h">
@@ -140,9 +143,6 @@
     </ClInclude>
     <ClInclude Include="BBox.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="VBORenderManager.h">
       <Filter>Header Files</Filter>
@@ -181,6 +181,12 @@
       <Filter>Source Files\nvModels</Filter>
     </ClInclude>
     <ClInclude Include="VBOModelManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCMC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

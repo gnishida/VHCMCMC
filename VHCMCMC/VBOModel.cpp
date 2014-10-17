@@ -22,7 +22,7 @@
 		fileNames=names;
 		modelInitialized=1;
 		scale=QVector3D(1.0f,1.0f,1.0f);
-		positions.push_back(QVector3D());
+		//positions.push_back(QVector3D());
 	}//
 
 
@@ -34,9 +34,9 @@
 		scale=QVector3D(scaleX,scaleY,scaleZ);
 	}//
 
-	void VBOModel::setPositions(std::vector<QVector3D>& _positions){
+	/*void VBOModel::setPositions(std::vector<QVector3D>& _positions){
 		positions=_positions;
-	}//
+	}*/
 
 	void VBOModel::clearModel(){
 
@@ -83,6 +83,8 @@
 			stride[fN] = modelT->getCompiledVertexSize() * sizeof(GLfloat);
 			normalOffset[fN] = modelT->getCompiledNormalOffset() * sizeof(GLfloat);
 			numIndexCount[fN]=modelT->getCompiledIndexCount();
+
+			modelT->computeBoundingBox(minVal, maxVal);
 
 			//printf("4 %d %d\n",modelT->getCompiledVertexCount(),modelT->getCompiledIndexCount());
 

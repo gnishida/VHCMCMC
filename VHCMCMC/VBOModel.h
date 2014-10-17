@@ -8,40 +8,40 @@
 #include "VBOUtil.h"
 
 
-	struct ModelSpec {
-		QMatrix4x4 transMatrix;
-		std::vector<QVector3D> colors;
-		int type;
-	};
+struct ModelSpec {
+	QMatrix4x4 transMatrix;
+	std::vector<QVector3D> colors;
+	int type;
+};
 
-	class VBOModel{
-	public:
+class VBOModel{
+public:
+	VBOModel();
 
-		VBOModel();
+	~VBOModel();
 
-		~VBOModel();
+	std::vector<QString> fileNames;
 
-		std::vector<QString> fileNames;
+	void initModel(std::vector<QString>& fileNames);
+	void initScale(float scale);
+	void initScale(float scaleX,float scaleY,float scaleZ);
+	//void setPositions(std::vector<QVector3D>& positions);
 
-		void initModel(std::vector<QString>& fileNames);
-		void initScale(float scale);
-		void initScale(float scaleX,float scaleY,float scaleZ);
-		void setPositions(std::vector<QVector3D>& positions);
+	void loadModel();
+	void clearModel();
+	void renderModel(int programId,ModelSpec& modelSpec);
 
-		void loadModel();
-		void clearModel();
-		void renderModel(int programId,ModelSpec& modelSpec);
+	std::vector<GLuint> vertexVBO;
+	std::vector<GLuint> indexVBO;
+	std::vector<GLuint> vaoVBO;
+	int modelInitialized;
 
-		std::vector<GLuint> vertexVBO;
-		std::vector<GLuint> indexVBO;
-		std::vector<GLuint> vaoVBO;
-		int modelInitialized;
+	std::vector<int> stride;
+	std::vector<int> normalOffset;
+	std::vector<int> numIndexCount;
+	QVector3D scale;
 
-		std::vector<int> stride;
-		std::vector<int> normalOffset;
-		std::vector<int> numIndexCount;
-		QVector3D scale;
-
-		std::vector<QVector3D> positions;
-
-	};
+	nv::vec3f minVal;
+	nv::vec3f maxVal;
+	//std::vector<QVector3D> positions;
+};

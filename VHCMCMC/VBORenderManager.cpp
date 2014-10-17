@@ -501,16 +501,19 @@
 	}//
 	////////////////////////////////////////////////////////////////////
 	// MODEL
-	void VBORenderManager::addStreetElementModel(QString name,ModelSpec mSpec){
+	void VBORenderManager::addModel(QString name,ModelSpec mSpec){
 		nameToVectorModels[name].push_back(mSpec);
 	}//
-	void VBORenderManager::renderAllStreetElementName(QString name){
+
+
+	void VBORenderManager::renderModels(QString name){
 		for(int i=0;i<nameToVectorModels[name].size();i++){
 			vboFurnitures.renderOneModel(program,nameToVectorModels[name][i]);
 		}
 		//printf("name %s --> %d\n",name.toAscii().constData(),nameToVectorModels[name].size());
 	}//
-	void VBORenderManager::removeAllStreetElementName(QString name){
+
+	void VBORenderManager::removeModels(QString name){
 		nameToVectorModels[name].clear();
 	}
 

@@ -121,9 +121,9 @@ public:
 	QHash<QString,std::vector<ModelSpec>> nameToVectorModels;
 	bool initializedStreetElements;
 	
-	void addStreetElementModel(QString name,ModelSpec mSpec);
-	void renderAllStreetElementName(QString name);
-	void removeAllStreetElementName(QString name);
+	void addModel(QString name,ModelSpec mSpec);
+	void renderModels(QString name);
+	void removeModels(QString name);
 	
 
 	void renderAll(bool cleanVertex);

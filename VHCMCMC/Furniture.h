@@ -12,16 +12,13 @@
 #include "Polygon2D.h"
 #include "VBORenderManager.h"
 
-//typedef boost::geometry::model::d2::point_xy<double> point_type;
-//typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon;
-
 /**
  * This class represents a piece of furniture.
  */
 class Furniture
 {
 public:
-	static enum { TYPE_DININGTABLE = 0, TYPE_BOOKSHELF, TYPE_SOFA, TYPE_SMALLSOFA, TYPE_TABLE, TYPE_TREE };
+	static enum { TYPE_DININGTABLE = 0, TYPE_SOFATABLE, TYPE_BOOKSHELF, TYPE_LAMP };
 
 public:
 	Furniture(int type, float x, float y, float z, float theta);
@@ -29,9 +26,7 @@ public:
 	void drawDiningTableChair(VBORenderManager& rendManager);
 	void drawBookShelf(VBORenderManager& rendManager);
 	void drawSofa(VBORenderManager& rendManager);
-	void drawSmallSofa(VBORenderManager& rendManager);
-	void drawTable(VBORenderManager& rendManager);
-	void drawTree(VBORenderManager& rendManager);
+	void drawLamp(VBORenderManager& rendManager);
 	void drawPicture(VBORenderManager& rendManager);
 	Polygon2D footprint();
 

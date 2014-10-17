@@ -1,20 +1,4 @@
-﻿/*********************************************************************
-This file is part of QtUrban.
-
-    QtUrban is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, version 3 of the License.
-
-    QtUrban is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with QtUrban.  If not, see <http://www.gnu.org/licenses/>.
-***********************************************************************/
-
-#include "GLWidget3D.h"
+﻿#include "GLWidget3D.h"
 #include "Util.h"
 #include "MainWindow.h"
 #include <gl/GLU.h>
@@ -24,13 +8,8 @@ GLWidget3D::GLWidget3D(QWidget* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuffer
 
 	camera.resetCamera();
 
-	spaceRadius=30000.0;
-	farPlaneToSpaceRadiusFactor=5.0f;//N 5.0f
-
 	rotationSensitivity = 0.4f;
 	zoomSensitivity = 0.1f;
-
-	shadowEnabled=true;
 }
 
 GLWidget3D::~GLWidget3D() {
@@ -113,7 +92,7 @@ void GLWidget3D::initializeGL() {
 	vboRenderManager.init();
 	updateCamera();
 	shadow.initShadow(vboRenderManager.program,this);
-	glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 0);//SHADOW: Disable		
+	glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 1);
 }
 
 void GLWidget3D::resizeGL(int width, int height) {
@@ -140,16 +119,16 @@ void GLWidget3D::drawScene(int drawMode) {
 		layout.draw(vboRenderManager);
 
 		glEnable(GL_CULL_FACE);
-		vboRenderManager.renderStaticGeometry(QString("layout"));
+		vboRenderManager.renderStaticGeometry("layout");
 		glDisable(GL_CULL_FACE);
-		vboRenderManager.renderAllStreetElementName(QString("furniture"));
+		vboRenderManager.renderModels("furniture");
 	} else if (drawMode == 1) { // compute shadow map
 		glUniform1i(glGetUniformLocation(vboRenderManager.program,"shadowState"), 2);
 
 		glEnable(GL_CULL_FACE);
 		vboRenderManager.renderStaticGeometry(QString("layout"));
 		glDisable(GL_CULL_FACE);
-		vboRenderManager.renderAllStreetElementName(QString("furniture"));
+		vboRenderManager.renderModels("furniture");
 	}
 }
 
@@ -238,3 +217,8 @@ void GLWidget3D::updateCamera(){
 	QVector3D light_dir(-0.40f,0.81f,-0.51f);
 	glUniform3f(glGetUniformLocation(vboRenderManager.program, "lightDir"),light_dir.x(),light_dir.y(),light_dir.z());
 }//
+
+void GLWidget3D::setLayout(Layout layout)
+{
+	this->layout = layout;
+}

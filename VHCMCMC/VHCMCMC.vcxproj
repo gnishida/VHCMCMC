@@ -154,6 +154,7 @@
     <ClCompile Include="Layout.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="MCMC.cpp" />
     <ClCompile Include="nvModel\nvModel.cpp" />
     <ClCompile Include="nvModel\nvModelObj.cpp" />
     <ClCompile Include="nvModel\nvModelQuery.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="GLWidget3D_Shadows.h" />
     <ClInclude Include="HumanComputationEmulator.h" />
     <ClInclude Include="Layout.h" />
+    <ClInclude Include="MCMC.h" />
     <ClInclude Include="nvModel\nvMath.h" />
     <ClInclude Include="nvModel\nvMatrix.h" />
     <ClInclude Include="nvModel\nvModel.h" />

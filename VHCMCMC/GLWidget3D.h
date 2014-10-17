@@ -35,14 +35,11 @@ public:
 	Layout layout;
 
 	QPoint lastPos;
-	float farPlaneToSpaceRadiusFactor;
-	float spaceRadius;
 	float rotationSensitivity;
 	float zoomSensitivity;
 
 	VBORenderManager vboRenderManager;
 	GLWidgetSimpleShadow shadow;
-	bool shadowEnabled;
 
 public:
 	GLWidget3D(QWidget* mainWin);
@@ -58,6 +55,7 @@ public:
 	void updateCamera();
 	void generate2DGeometry();
 	void generate3DGeometry(bool justRoads=false);
+	void setLayout(Layout layout);
 
 
 protected:

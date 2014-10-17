@@ -27,14 +27,13 @@ public:
 	QMatrix4x4 pMatrix;
 	QMatrix3x3 normalMatrix;
 
-
 	Camera2D() {
-		xrot = 0.0f;//-75.0;
+		xrot = -60.0f;
 		yrot = 0.0;
-		zrot = 0.0f;//-45.0;
+		zrot = 0.0f;
 		dx = 0.0;
 		dy = 0.0;
-		dz = 12.0;
+		dz = 8.0;
 		lookAtX = 0.0f;
 		lookAtY = 0.0f;
 		lookAtZ = 0.0f;
@@ -147,7 +146,6 @@ public:
 		dx += x;
 		dy += y;
 		dz += z;
-		//printf("dx: %f,dy: %f, dz: %f\n",dx,dy,dz);
 	}
 
 	void setLookAt(float x, float y, float z) {
@@ -158,11 +156,11 @@ public:
 
 	void resetCamera() {
 		setLookAt(0.0f, 0.0f, 0.0f);
-		xrot = 0.0f;
+		xrot = -60.0f;
 		yrot = 0.0;
 		zrot = 0.0f;
-		setTranslation(0.0f, 0.0f, 12.0f);//G::global().getFloat("MAX_Z") );//MAX_Z
-	}//
+		setTranslation(0.0f, 0.0f, 8.0f);
+	}
 
 	void saveCameraPose(const QString &filepath) {
 		//QFile camFile("data/camPose"+QString::number(numCam)+".cam");

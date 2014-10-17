@@ -16,7 +16,7 @@ public:
 	Layout();
 	Layout(float width, float depth, float height) : width(width), depth(depth), height(height) {}
 	void addFurniture(Furniture furniture);
-	Layout proposeChange(float sigmaX, float sigmaY, float sigmaTheta);
+	void change();
 	cv::Mat feature();
 	void draw(VBORenderManager& rendManager);
 	bool within(Polygon2D line);
